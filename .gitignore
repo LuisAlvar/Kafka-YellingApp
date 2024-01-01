@@ -1,14 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Gradle template
 .gradle
-/build/
+app/build
+app/bin
 
-/src/main/java/bbejeck/holding_pen
 streaming-workflows
 
 .idea
-
-
 
 # Ignore Gradle GUI config
 gradle-app.setting
