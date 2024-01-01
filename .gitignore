@@ -2,8 +2,7 @@
 ### Gradle template
 .gradle
 app/build
-app/bin
-
+.DS_Store
 streaming-workflows
 
 .idea
