@@ -7,21 +7,24 @@ import java.util.Properties;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Produced;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World! Happy New Year Day! 2024";
-    }
+
+    private static final Logger Log = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
         new App().Run();
     }
 
-    public void Run(){
+    public void Run() {
         
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "yelling_app_id");
@@ -31,6 +34,26 @@ public class App {
         Serde<String> strSerde = Serdes.String();
         StreamsBuilder builder = new StreamsBuilder();
 
+        // Creating the source node or the parent node - response for consuming the records from Topic
         KStream<String, String> simpleFirstStream = builder.stream("src-topic", Consumed.with(strSerde, strSerde));
+
+        // Create anothe KStream instance that's a child node of the parent node. 
+        KStream<String, String> upperCasedStream = simpleFirstStream.mapValues(v -> v.toUpperCase());
+
+        // writes the transformed output to another topic (the sink node)
+        upperCasedStream.to("out-topic", Produced.with(strSerde, strSerde));
+
+
+        KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), strmConfig);
+
+        kafkaStreams.start();
+        try {
+            Thread.sleep(35000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Log.info("Shutting down the Yelling APP Now");
+        kafkaStreams.close();
     }
 }
