@@ -29,6 +29,8 @@ dependencies {
     implementation 'org.apache.kafka:connect-api:3.6.1'
     implementation 'org.apache.commons:commons-lang3:3.1'
 
+    implementation 'com.github.javafaker:javafaker:0.12'
+    
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation 'org.slf4j:slf4j-api:1.7.32'
 

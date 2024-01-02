@@ -16,6 +16,8 @@ import org.apache.kafka.streams.kstream.Produced;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import clients.producer.MockDataProducer;
+
 public class App {
 
     private static final Logger Log = LoggerFactory.getLogger(App.class);
@@ -26,6 +28,10 @@ public class App {
 
     public void Run() {
         
+        // Missing component :: genearting data to push to the producer. 
+        // Copied the book due to not knowing much about Java and what are the popular library for data generate, if any. 
+        MockDataProducer.produceRandomTextData();
+
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "yelling_app_id");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
